@@ -1,10 +1,14 @@
 package com.enigma.loan.mapper;
 
+import com.enigma.loan.dto.request.UserRequest;
 import com.enigma.loan.dto.response.UserResponse;
 import com.enigma.loan.entity.User;
+import com.enigma.loan.utils.enums.UserRole;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class UserMapper {
     // mapper untuk create
     public static UserResponse convertToUserResponse(User user){
@@ -18,6 +22,16 @@ public class UserMapper {
         userResponse.setPhoneNumber(user.getPhoneNumber());
         userResponse.setRole(user.getRole());
         return userResponse;
+    }
+
+    public static User toEntity(UserRequest request) {
+        return User.builder()
+                .name(request.getName())
+                .email(request.getEmail())
+                .password(request.getPassword())
+                .phoneNumber(request.getPhoneNumber())
+                .role(request.getRole())
+                .build();
     }
 
     // maper untuk list

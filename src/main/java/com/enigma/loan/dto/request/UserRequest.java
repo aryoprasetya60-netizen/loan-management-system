@@ -1,5 +1,7 @@
 package com.enigma.loan.dto.request;
 
+import com.enigma.loan.utils.enums.UserRole;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
@@ -15,6 +17,7 @@ public class UserRequest {
     private String name;
 
     @NotBlank(message = "email tidak boleh kosong")
+    @Email
     private String email;
 
     @NotBlank(message = "Password Tidak Boleh Kosong")
@@ -24,5 +27,5 @@ public class UserRequest {
     private String phoneNumber;
 
     @NotBlank
-    private String role;
+    private UserRole role;
 }
