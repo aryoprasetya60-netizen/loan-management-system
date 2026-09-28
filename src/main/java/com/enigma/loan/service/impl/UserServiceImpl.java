@@ -6,9 +6,11 @@ import com.enigma.loan.entity.User;
 import com.enigma.loan.mapper.UserMapper;
 import com.enigma.loan.repository.UserRepository;
 import com.enigma.loan.service.UserService;
+import com.enigma.loan.utils.enums.UserRole;
 import com.enigma.loan.utils.exception.DuplicateResourceException;
 import com.enigma.loan.utils.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,11 +20,14 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserResponse create(UserRequest request) {
 
         validateEmailNotExists(request.getEmail());
+
+        request.setPassword(passwordEncoder.encode(request.getPassword()));
 
         User user = UserMapper.toEntity(request);
 
@@ -59,7 +64,7 @@ public class UserServiceImpl implements UserService {
         user.setName(request.getName());
         user.setEmail(request.getEmail());
         user.setPhoneNumber(request.getPhoneNumber());
-        user.setRole(request.getRole());
+        user.setRole(UserRole.valueOf(request.getRole()));
 
         User updatedUser = userRepository.save(user);
 

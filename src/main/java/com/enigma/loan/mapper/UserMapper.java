@@ -4,12 +4,16 @@ import com.enigma.loan.dto.request.UserRequest;
 import com.enigma.loan.dto.response.UserResponse;
 import com.enigma.loan.entity.User;
 import com.enigma.loan.utils.enums.UserRole;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class UserMapper {
+    private final PasswordEncoder passwordEncoder;
     // mapper untuk create
     public static UserResponse convertToUserResponse(User user){
         // 1. instansiate
@@ -30,7 +34,7 @@ public class UserMapper {
                 .email(request.getEmail())
                 .password(request.getPassword())
                 .phoneNumber(request.getPhoneNumber())
-                .role(request.getRole())
+                .role(UserRole.valueOf(request.getRole()))
                 .build();
     }
 
