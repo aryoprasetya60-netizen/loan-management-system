@@ -8,8 +8,11 @@ public class LoanMapper {
     public static Loan convertToLoan(LoanRequest request) {
         Loan loan = new Loan();
 
-        loan.setAmount(request.getAmount());
+        loan.setLoanAmount(request.getLoanAmount());
+        loan.setMonthlyIncome(request.getMonthlyIncome());
+        loan.setMonthlyExpense(request.getMonthlyExpense());
         loan.setTenor(request.getTenor());
+        loan.setPurpose(request.getPurpose());
         loan.setEmploymentStatus(request.getEmploymentStatus());
 
         return loan;
@@ -20,12 +23,15 @@ public class LoanMapper {
 
         response.setId(loan.getId());
         response.setUserId(loan.getUser().getId());
-        response.setAmount(loan.getAmount());
+        response.setLoanAmount(loan.getLoanAmount());
         response.setTenor(loan.getTenor());
+        response.setPurpose(loan.getPurpose());
+        response.setMonthlyIncome(loan.getMonthlyIncome());
+        response.setMonthlyExpense(loan.getMonthlyExpense());
         response.setEmploymentStatus(loan.getEmploymentStatus());
-        response.setCreditScore(loan.getCreditScore());
-        response.setRecommendation(loan.getRecommendation());
         response.setStatus(loan.getStatus());
+        response.setCreditScore(loan.getCreditScore());
+        response.setCreditRecommendation(loan.getRecommendation());
         response.setCreatedAt(loan.getCreatedAt());
         response.setUpdatedAt(loan.getUpdatedAt());
 

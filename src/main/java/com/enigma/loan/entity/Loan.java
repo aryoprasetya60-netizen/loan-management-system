@@ -23,31 +23,42 @@ public class Loan extends BaseEntity {
     private User user;
 
     @Column(nullable = false)
-    private BigDecimal amount;
+    private BigDecimal loanAmount;
 
     @Column(nullable = false)
     private Integer tenor;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "employment_status", nullable = false)
+    @Column(nullable = false)
     private EmploymentStatus employmentStatus;
 
-    @Column(name = "credit_score")
     private Integer creditScore;
 
+    @Column(nullable = false)
+    private BigDecimal monthlyIncome;
+
+    @Column(nullable = false)
+    private BigDecimal monthlyExpense;
+
     private String recommendation;
+
+    @Column(nullable = false)
+    private String purpose;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private LoanStatus status;
 
-    public Loan(User user, BigDecimal amount, Integer tenor, EmploymentStatus employmentStatus, Integer creditScore, String recommendation, LoanStatus status) {
+    public Loan(User user, BigDecimal loanAmount, Integer tenor, EmploymentStatus employmentStatus, Integer creditScore, BigDecimal monthlyIncome, BigDecimal monthlyExpense, String recommendation, String purpose, LoanStatus status) {
         this.user = user;
-        this.amount = amount;
+        this.loanAmount = loanAmount;
         this.tenor = tenor;
         this.employmentStatus = employmentStatus;
         this.creditScore = creditScore;
+        this.monthlyIncome = monthlyIncome;
+        this.monthlyExpense = monthlyExpense;
         this.recommendation = recommendation;
+        this.purpose = purpose;
         this.status = status;
     }
 }

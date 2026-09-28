@@ -15,22 +15,16 @@ import java.time.LocalDateTime;
 public class LoanResponse {
 
     private Long id;
-
     private Long userId;
-
-    private BigDecimal amount;
-
+    private BigDecimal loanAmount;
     private Integer tenor;
-
+    private String purpose;
+    private BigDecimal monthlyIncome;
+    private BigDecimal monthlyExpense;
     private EmploymentStatus employmentStatus;
-
-    private Integer creditScore;
-
-    private String recommendation;
-
     private LoanStatus status;
-
+    private Integer creditScore;
+    private String creditRecommendation;
     private LocalDateTime createdAt;
-
     private LocalDateTime updatedAt;
 }
