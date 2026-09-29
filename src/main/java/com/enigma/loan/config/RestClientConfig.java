@@ -12,7 +12,7 @@ import org.springframework.web.client.RestClient;
 @Configuration
 public class RestClientConfig {
 
-    @Value("${api.jsonplaceholder.base-url:https://jsonplaceholder.typicode.com/}")
+    @Value("${credit-scoring.base-url}")
     private String jsonPlaceholderBaseUrl;
 
     // intercept(satpam) untuk logging request dan response

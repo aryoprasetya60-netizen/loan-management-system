@@ -13,6 +13,6 @@ public class CreditScoreRequest {
     private String customerId;
     private BigDecimal monthlyIncome;
     private BigDecimal monthlyExpense;
-    private BigDecimal requestedLoanAmount;
+    private BigDecimal requestedAmount;
     private Integer tenor;
 }

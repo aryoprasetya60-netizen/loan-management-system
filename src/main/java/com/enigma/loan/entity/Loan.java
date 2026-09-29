@@ -40,7 +40,7 @@ public class Loan extends BaseEntity {
     @Column(nullable = false)
     private BigDecimal monthlyExpense;
 
-    private String recommendation;
+    private String creditRecommendation;
 
     @Column(nullable = false)
     private String purpose;
@@ -57,7 +57,7 @@ public class Loan extends BaseEntity {
         this.creditScore = creditScore;
         this.monthlyIncome = monthlyIncome;
         this.monthlyExpense = monthlyExpense;
-        this.recommendation = recommendation;
+        this.creditRecommendation = recommendation;
         this.purpose = purpose;
         this.status = status;
     }

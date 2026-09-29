@@ -16,7 +16,7 @@ public class OpenApiConfig {
     public OpenAPI enigmaCademyOpenApi() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("EnigmaCademy")
+                        .title("LC-Loan")
                         .description("learning management system enigmacademy")
                         .version("v1.0.0")
                         .contact(new Contact()

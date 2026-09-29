@@ -31,7 +31,7 @@ public class LoanMapper {
         response.setEmploymentStatus(loan.getEmploymentStatus());
         response.setStatus(loan.getStatus());
         response.setCreditScore(loan.getCreditScore());
-        response.setCreditRecommendation(loan.getRecommendation());
+        response.setCreditRecommendation(loan.getCreditRecommendation());
         response.setCreatedAt(loan.getCreatedAt());
         response.setUpdatedAt(loan.getUpdatedAt());
 
