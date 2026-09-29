@@ -1,8 +1,10 @@
 package com.enigma.loan.controller;
 
 import com.enigma.loan.dto.request.LoanRequest;
+import com.enigma.loan.dto.response.CommonResponse;
 import com.enigma.loan.dto.response.LoanResponse;
 import com.enigma.loan.service.LoanService;
+import com.enigma.loan.utils.constants.ResponseMessage;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,5 +27,22 @@ public class LoanController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(response);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CommonResponse<LoanResponse>> getById(
+            @PathVariable Long id
+    ) {
+        LoanResponse response = loanService.getById(id);
+
+        CommonResponse<LoanResponse> commonResponse = CommonResponse.<LoanResponse>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message(ResponseMessage.SUCCES_GET_DATA)
+                .data(response)
+                .build();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(commonResponse);
     }
 }

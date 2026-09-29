@@ -89,4 +89,16 @@ public class LoanServiceImpl implements LoanService {
         // 10. Convert entity menjadi response
         return LoanMapper.convertToLoanResponse(savedLoan);
     }
+
+    @Override
+    public LoanResponse getById(Long id) {
+        Loan loan = findById(id);
+        return LoanMapper.convertToLoanResponse(loan);
+    }
+
+    private Loan findById(Long id){
+        return loanRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Loan not found"));
+    }
 }

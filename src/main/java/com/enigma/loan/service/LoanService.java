@@ -5,4 +5,5 @@ import com.enigma.loan.dto.response.LoanResponse;
 
 public interface LoanService {
     LoanResponse create(LoanRequest request);
+    LoanResponse getById(Long id);
 }
