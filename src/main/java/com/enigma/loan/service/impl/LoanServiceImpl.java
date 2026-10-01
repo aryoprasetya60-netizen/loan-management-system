@@ -13,13 +13,17 @@ import com.enigma.loan.service.LoanService;
 import com.enigma.loan.utils.enums.LoanStatus;
 import com.enigma.loan.utils.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class LoanServiceImpl implements LoanService {
 
     private final LoanRepository loanRepository;
@@ -35,9 +39,7 @@ public class LoanServiceImpl implements LoanService {
 
         String email = authentication.getName();
 
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("User not found"));
+        User user = findByEmail(email);
 
         // 2. Convert request menjadi Loan entity
         Loan loan = LoanMapper.convertToLoan(request);
@@ -96,9 +98,34 @@ public class LoanServiceImpl implements LoanService {
         return LoanMapper.convertToLoanResponse(loan);
     }
 
+    @Override
+    public List<LoanResponse> getMyLoans() {
+        // 1. Ambil email user yang sedang login dari JWT Security Context
+        String email = SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
+
+        // 2. Cari user berdasarkan email
+        User user = findByEmail(email);
+
+        // 3. Ambil semua loan milik user tersebut
+        List<Loan> loans = loanRepository.findByUser(user);
+
+        // 4. Ubah entity Loan menjadi DTO LoanResponse
+        return loans.stream()
+                .map(LoanMapper::convertToLoanResponse)
+                .toList();
+    }
+
     private Loan findById(Long id){
         return loanRepository.findById(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Loan not found"));
+    }
+
+    private User findByEmail(String email){
+        return userRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User not found"));
     }
 }

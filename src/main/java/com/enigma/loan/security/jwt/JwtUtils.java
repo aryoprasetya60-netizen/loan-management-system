@@ -73,7 +73,7 @@ public class JwtUtils {
     // 4. get role
     public String getRoleFromJwtToken(String token) {
         DecodedJWT jwt = JWT.decode(token);
-        return jwt.getClaim("role").toString();
+        return jwt.getClaim("role").asString();
     }
 
 }

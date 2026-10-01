@@ -31,9 +31,14 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
             if(jwt != null && jwtUtils.validateJwtToken(jwt)) {
                 String username = jwtUtils.getUsernameFromJwtToken(jwt);
+                String role = jwtUtils.getRoleFromJwtToken(jwt);
 
-                // cara 1 : mendapatkan UserDetails dari database atau loadUserByUsername yang ada di service
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                UserDetails userDetails =
+                        org.springframework.security.core.userdetails.User
+                                .withUsername(username)
+                                .password("")
+                                .authorities(role)
+                                .build();
 
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         userDetails,
