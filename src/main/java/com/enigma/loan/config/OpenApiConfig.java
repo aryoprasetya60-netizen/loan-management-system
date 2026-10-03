@@ -7,24 +7,35 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
 
 @Configuration
 public class OpenApiConfig {
     @Bean
     public OpenAPI enigmaCademyOpenApi() {
+        Server ngrokServer = new Server()
+                .url("https://tidings-flashy-cure.ngrok-free.dev")
+                .description("Server Produksi / Ngrok Tunnel");
+
+        Server localServer = new Server()
+                .url("http://localhost:8080")
+                .description("Server Lokal (Development)");
+
         return new OpenAPI()
                 .info(new Info()
-                        .title("LC-Loan")
-                        .description("learning management system enigmacademy")
+                        .title("Loans App")
+                        .description("Aplikasi Loans App")
                         .version("v1.0.0")
                         .contact(new Contact()
-                                .name("Enigmacamp")
-                                .email("batch10@enigmacamp.com"))
+                                .name("Loans App")
+                                .email("loansapp@email.com"))
                         .license(new License()
-                                .name("Enigmacamp")
-                                .url("www.enigmacamp.com")))
+                                .name("Loans App")
+                                .url("www.loans-app.com")))
                 .components(new Components()
                         .addSecuritySchemes("bearerAuth",
                                 new SecurityScheme()
@@ -32,7 +43,11 @@ public class OpenApiConfig {
                                         .type(SecurityScheme.Type.HTTP)
                                         .scheme("bearer")
                                         .bearerFormat("JWT")
-                                        .description("tambahkan JWT . contoh : xxxjkshakdjhakjsh")))
-                .addSecurityItem(new SecurityRequirement().addList("bearerAuth"));
+                                        .description("Masukkan JWT")))
+                .addSecurityItem(
+                        new SecurityRequirement()
+                                .addList("bearerAuth")
+                )
+                .servers(List.of(ngrokServer, ngrokServer));
     }
 }

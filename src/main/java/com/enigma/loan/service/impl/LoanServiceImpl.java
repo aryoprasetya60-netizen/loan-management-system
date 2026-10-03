@@ -37,9 +37,16 @@ public class LoanServiceImpl implements LoanService {
         Authentication authentication =
                 SecurityContextHolder.getContext().getAuthentication();
 
+        log.info("=== CREATE LOAN ===");
+        log.info("Authentication: {}", authentication);
+        log.info("Authenticated: {}", authentication.isAuthenticated());
+        log.info("Principal: {}", authentication.getPrincipal());
+        log.info("Name: {}", authentication.getName());
         String email = authentication.getName();
 
         User user = findByEmail(email);
+
+        log.info("User found: {}", user.getEmail());
 
         // 2. Convert request menjadi Loan entity
         Loan loan = LoanMapper.convertToLoan(request);
@@ -74,9 +81,10 @@ public class LoanServiceImpl implements LoanService {
                         .retrieve()
                         .body(CreditScoreResponse.class);
 
+        log.info("Calling Credit Scoring Service...");
+        log.info("CreditScoreRequest: {}", creditScoreRequest);
         // 8. Simpan hasil Credit Scoring ke Loan
         loan.setCreditScore(creditScoreResponse.getScore());
-
         loan.setCreditRecommendation(
                 creditScoreResponse.getRiskLevel()
                         + " - "
@@ -84,6 +92,7 @@ public class LoanServiceImpl implements LoanService {
                         ? "ELIGIBLE"
                         : "NOT ELIGIBLE")
         );
+        log.info("Credit scoring response: {}", creditScoreResponse);
 
         // 9. Simpan Loan ke database
         Loan savedLoan = loanRepository.save(loan);
