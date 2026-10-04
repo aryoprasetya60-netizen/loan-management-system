@@ -48,6 +48,6 @@ public class OpenApiConfig {
                         new SecurityRequirement()
                                 .addList("bearerAuth")
                 )
-                .servers(List.of(ngrokServer, ngrokServer));
+                .servers(List.of(localServer, localServer));
     }
 }
