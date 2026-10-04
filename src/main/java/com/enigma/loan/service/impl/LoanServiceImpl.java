@@ -6,17 +6,21 @@ import com.enigma.loan.dto.response.CreditScoreResponse;
 import com.enigma.loan.dto.response.LoanResponse;
 import com.enigma.loan.entity.Loan;
 import com.enigma.loan.entity.User;
+import com.enigma.loan.entity.UserProfile;
 import com.enigma.loan.mapper.LoanMapper;
 import com.enigma.loan.repository.LoanRepository;
+import com.enigma.loan.repository.UserProfileRepository;
 import com.enigma.loan.repository.UserRepository;
 import com.enigma.loan.service.LoanService;
 import com.enigma.loan.utils.enums.LoanStatus;
+import com.enigma.loan.utils.exception.BadRequestException;
 import com.enigma.loan.utils.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
 
 import java.util.List;
@@ -28,48 +32,57 @@ public class LoanServiceImpl implements LoanService {
 
     private final LoanRepository loanRepository;
     private final UserRepository userRepository;
+    private final UserProfileRepository userProfileRepository;
     private final RestClient restClient;
 
     @Override
+    @Transactional
     public LoanResponse create(LoanRequest request) {
 
-        // 1. Ambil user yang sedang login
         Authentication authentication =
                 SecurityContextHolder.getContext().getAuthentication();
 
-        log.info("=== CREATE LOAN ===");
-        log.info("Authentication: {}", authentication);
-        log.info("Authenticated: {}", authentication.isAuthenticated());
-        log.info("Principal: {}", authentication.getPrincipal());
-        log.info("Name: {}", authentication.getName());
         String email = authentication.getName();
 
         User user = findByEmail(email);
 
-        log.info("User found: {}", user.getEmail());
+        UserProfile userProfile = userProfileRepository.findByUser(user)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User profile not found"));
 
-        // 2. Convert request menjadi Loan entity
+        if (userProfile.getMonthlyIncome() == null) {
+            throw new BadRequestException("Monthly income belum diisi");
+        }
+
+        if (userProfile.getMonthlyExpense() == null) {
+            throw new BadRequestException("Monthly expense belum diisi");
+        }
+
+        if (userProfile.getEmploymentStatus() == null) {
+            throw new BadRequestException("Employment status belum diisi");
+        }
+        if (userProfile.getKtpPath() == null) {
+            throw new BadRequestException("KTP belum diupload");
+        }
+
+        if (userProfile.getSalarySlipPath() == null) {
+            throw new BadRequestException("Salary slip belum diupload");
+        }
+
         Loan loan = LoanMapper.convertToLoan(request);
 
-        // 3. Hubungkan Loan dengan User
         loan.setUser(user);
 
-        // 4. Status awal Loan
-        loan.setStatus(LoanStatus.PENDING);
+        loan.setLoanStatus(LoanStatus.PENDING);
 
-        // 5. Buat customerId untuk Credit Scoring Service
-        String customerId = String.format(
-                "CUS-%03d",
-                user.getId()
-        );
+        String customerId = String.format("CUS-%03d", user.getId());
 
-        // 6. Buat request ke Credit Scoring Service
         CreditScoreRequest creditScoreRequest =
                 CreditScoreRequest.builder()
                         .customerId(customerId)
-                        .monthlyIncome(request.getMonthlyIncome())
-                        .monthlyExpense(request.getMonthlyExpense())
-                        .requestedAmount(request.getLoanAmount())
+                        .monthlyIncome(userProfile.getMonthlyIncome())
+                        .monthlyExpense(userProfile.getMonthlyExpense())
+                        .requestedAmount(request.getRequestedAmount())
                         .tenor(request.getTenor())
                         .build();
 
@@ -81,23 +94,14 @@ public class LoanServiceImpl implements LoanService {
                         .retrieve()
                         .body(CreditScoreResponse.class);
 
-        log.info("Calling Credit Scoring Service...");
-        log.info("CreditScoreRequest: {}", creditScoreRequest);
-        // 8. Simpan hasil Credit Scoring ke Loan
+        // 8. Simpan hasil Credit Scoring sebagai snapshot Loan
         loan.setCreditScore(creditScoreResponse.getScore());
-        loan.setCreditRecommendation(
-                creditScoreResponse.getRiskLevel()
-                        + " - "
-                        + (creditScoreResponse.getEligible()
-                        ? "ELIGIBLE"
-                        : "NOT ELIGIBLE")
-        );
-        log.info("Credit scoring response: {}", creditScoreResponse);
+        loan.setRiskLevel(creditScoreResponse.getRiskLevel());
+        loan.setEligible(creditScoreResponse.getEligible());
 
-        // 9. Simpan Loan ke database
+        // 9. Simpan Loan
         Loan savedLoan = loanRepository.save(loan);
 
-        // 10. Convert entity menjadi response
         return LoanMapper.convertToLoanResponse(savedLoan);
     }
 

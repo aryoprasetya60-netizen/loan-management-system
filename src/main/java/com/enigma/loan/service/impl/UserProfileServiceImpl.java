@@ -1,12 +1,15 @@
 package com.enigma.loan.service.impl;
 
 import com.enigma.loan.dto.request.UserProfileRequest;
+import com.enigma.loan.dto.response.FileResponse;
 import com.enigma.loan.dto.response.UserProfileResponse;
 import com.enigma.loan.entity.User;
 import com.enigma.loan.entity.UserProfile;
 import com.enigma.loan.mapper.UserProfileMapper;
+import com.enigma.loan.repository.FileStorageRepository;
 import com.enigma.loan.repository.UserProfileRepository;
 import com.enigma.loan.repository.UserRepository;
+import com.enigma.loan.service.FileStorageService;
 import com.enigma.loan.service.UserProfileService;
 import com.enigma.loan.utils.exception.DuplicateResourceException;
 import com.enigma.loan.utils.exception.ResourceNotFoundException;
@@ -14,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +25,8 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     private final UserProfileRepository userProfileRepository;
     private final UserRepository userRepository;
+    private final FileStorageRepository fileStorageRepository;
+    private final FileStorageService fileStorageService;
 
     @Override
     public UserProfileResponse create(UserProfileRequest request) {
@@ -69,6 +75,16 @@ public class UserProfileServiceImpl implements UserProfileService {
                 userProfileRepository.save(userProfile);
 
         return UserProfileMapper.convertToUserProfileResponse(updatedProfile);
+    }
+
+    @Override
+    public UserProfileResponse uploadKtp(MultipartFile file) {
+        return null;
+    }
+
+    @Override
+    public FileResponse uploadSalarySlip(MultipartFile file) {
+        return null;
     }
 
     private User getCurrentUser() {

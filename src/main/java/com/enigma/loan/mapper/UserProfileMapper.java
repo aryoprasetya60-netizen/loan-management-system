@@ -23,15 +23,21 @@ public class UserProfileMapper {
     ) {
         UserProfileResponse response = new UserProfileResponse();
 
-        response.setId(userProfile.getId());
-        response.setUserId(userProfile.getUser().getId());
+        response.setId(userProfile.getUser().getId());
+        response.setName(userProfile.getUser().getName());
+        response.setEmail(userProfile.getUser().getEmail());
+        response.setPhoneNumber(userProfile.getUser().getPhoneNumber());
+
         response.setMonthlyIncome(userProfile.getMonthlyIncome());
-        response.setMonthlyExpense(userProfile.getMonthlyExpense());
         response.setEmploymentStatus(userProfile.getEmploymentStatus());
-        response.setKtpPath(userProfile.getKtpPath());
-        response.setSalarySlipPath(userProfile.getSalarySlipPath());
-        response.setCreatedAt(userProfile.getCreatedAt());
-        response.setUpdatedAt(userProfile.getUpdatedAt());
+
+        response.setKtpUploaded(
+                userProfile.getKtpPath() != null
+        );
+
+        response.setSalarySlipUploaded(
+                userProfile.getSalarySlipPath() != null
+        );
 
         return response;
     }

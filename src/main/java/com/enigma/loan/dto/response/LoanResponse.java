@@ -1,5 +1,7 @@
 package com.enigma.loan.dto.response;
 
+import com.enigma.loan.utils.enums.AiRecommendation;
+import com.enigma.loan.utils.enums.AiStatus;
 import com.enigma.loan.utils.enums.EmploymentStatus;
 import com.enigma.loan.utils.enums.LoanStatus;
 import lombok.*;
@@ -15,16 +17,32 @@ import java.time.LocalDateTime;
 public class LoanResponse {
 
     private Long id;
+
     private Long userId;
-    private BigDecimal loanAmount;
+
+    private BigDecimal requestedAmount;
+
     private Integer tenor;
+
     private String purpose;
-    private BigDecimal monthlyIncome;
-    private BigDecimal monthlyExpense;
-    private EmploymentStatus employmentStatus;
-    private LoanStatus status;
+
     private Integer creditScore;
-    private String creditRecommendation;
+
+    private String riskLevel;
+
+    private Boolean eligible;
+
+    private AiRecommendation aiRecommendation;
+
+    private String aiExplanation;
+
+    private AiStatus aiStatus;
+
+    private LocalDateTime aiGeneratedAt;
+
+    private LoanStatus loanStatus;
+
     private LocalDateTime createdAt;
+
     private LocalDateTime updatedAt;
 }

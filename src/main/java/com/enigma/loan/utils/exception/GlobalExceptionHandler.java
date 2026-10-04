@@ -1,6 +1,7 @@
 package com.enigma.loan.utils.exception;
 
 import com.enigma.loan.dto.response.CommonResponse;
+import com.enigma.loan.utils.ResponseUtil;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -84,5 +85,16 @@ public class GlobalExceptionHandler {
                 .build();
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(DuplicateResourceException.class)
+    public ResponseEntity<CommonResponse<Object>> handleDuplicateResource(
+            DuplicateResourceException e
+    ) {
+        return ResponseUtil.buildResponse(
+                HttpStatus.CONFLICT,
+                e.getMessage(),
+                null
+        );
     }
 }

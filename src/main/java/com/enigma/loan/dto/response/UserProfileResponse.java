@@ -14,12 +14,11 @@ import java.time.LocalDateTime;
 public class UserProfileResponse {
 
     private Long id;
-    private Long userId;
+    private String name;
+    private String email;
+    private String phoneNumber;
     private BigDecimal monthlyIncome;
-    private BigDecimal monthlyExpense;
     private EmploymentStatus employmentStatus;
-    private String ktpPath;
-    private String salarySlipPath;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private boolean ktpUploaded;
+    private boolean salarySlipUploaded;
 }

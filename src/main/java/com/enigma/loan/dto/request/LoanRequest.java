@@ -16,17 +16,12 @@ import java.math.BigDecimal;
 @Builder
 public class LoanRequest {
 
-    @NotNull(message = "Loan amount wajib diisi")
-    @DecimalMin(value = "100000", message = "Loan amount minimal 100000")
-    private BigDecimal loanAmount;
-
-    @NotNull(message = "Monthly income wajib diisi")
-    @DecimalMin(value = "0", message = "Monthly income tidak boleh negatif")
-    private BigDecimal monthlyIncome;
-
-    @NotNull(message = "Monthly expense wajib diisi")
-    @DecimalMin(value = "0", message = "Monthly expense tidak boleh negatif")
-    private BigDecimal monthlyExpense;
+    @NotNull(message = "Requested amount wajib diisi")
+    @DecimalMin(
+            value = "100000",
+            message = "Requested amount minimal 100000"
+    )
+    private BigDecimal requestedAmount;
 
     @NotNull(message = "Tenor wajib diisi")
     @Positive(message = "Tenor harus lebih dari 0")
@@ -34,7 +29,4 @@ public class LoanRequest {
 
     @NotBlank(message = "Purpose wajib diisi")
     private String purpose;
-
-    @NotNull(message = "Employment status wajib diisi")
-    private EmploymentStatus employmentStatus;
 }

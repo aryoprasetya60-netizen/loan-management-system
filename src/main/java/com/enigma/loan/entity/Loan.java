@@ -1,10 +1,13 @@
 package com.enigma.loan.entity;
+import com.enigma.loan.utils.enums.AiRecommendation;
+import com.enigma.loan.utils.enums.AiStatus;
 import com.enigma.loan.utils.enums.EmploymentStatus;
 import com.enigma.loan.utils.enums.LoanStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "loans")
@@ -23,42 +26,35 @@ public class Loan extends BaseEntity {
     private User user;
 
     @Column(nullable = false)
-    private BigDecimal loanAmount;
+    private BigDecimal requestedAmount;
 
     @Column(nullable = false)
     private Integer tenor;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private EmploymentStatus employmentStatus;
-
-    private Integer creditScore;
-
-    @Column(nullable = false)
-    private BigDecimal monthlyIncome;
-
-    @Column(nullable = false)
-    private BigDecimal monthlyExpense;
-
-    private String creditRecommendation;
-
     @Column(nullable = false)
     private String purpose;
 
+    // Credit Scoring Snapshot
+    private Integer creditScore;
+
+    private String riskLevel;
+
+    private Boolean eligible;
+
+    // AI Recommendation
+    @Enumerated(EnumType.STRING)
+    private AiRecommendation aiRecommendation;
+
+    @Column(columnDefinition = "TEXT")
+    private String aiExplanation;
+
+    @Enumerated(EnumType.STRING)
+    private AiStatus aiStatus;
+
+    private LocalDateTime aiGeneratedAt;
+
+    // Loan Status
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private LoanStatus status;
-
-    public Loan(User user, BigDecimal loanAmount, Integer tenor, EmploymentStatus employmentStatus, Integer creditScore, BigDecimal monthlyIncome, BigDecimal monthlyExpense, String recommendation, String purpose, LoanStatus status) {
-        this.user = user;
-        this.loanAmount = loanAmount;
-        this.tenor = tenor;
-        this.employmentStatus = employmentStatus;
-        this.creditScore = creditScore;
-        this.monthlyIncome = monthlyIncome;
-        this.monthlyExpense = monthlyExpense;
-        this.creditRecommendation = recommendation;
-        this.purpose = purpose;
-        this.status = status;
-    }
+    private LoanStatus loanStatus;
 }

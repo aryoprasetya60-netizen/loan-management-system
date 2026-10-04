@@ -8,12 +8,9 @@ public class LoanMapper {
     public static Loan convertToLoan(LoanRequest request) {
         Loan loan = new Loan();
 
-        loan.setLoanAmount(request.getLoanAmount());
-        loan.setMonthlyIncome(request.getMonthlyIncome());
-        loan.setMonthlyExpense(request.getMonthlyExpense());
+        loan.setRequestedAmount(request.getRequestedAmount());
         loan.setTenor(request.getTenor());
         loan.setPurpose(request.getPurpose());
-        loan.setEmploymentStatus(request.getEmploymentStatus());
 
         return loan;
     }
@@ -23,15 +20,25 @@ public class LoanMapper {
 
         response.setId(loan.getId());
         response.setUserId(loan.getUser().getId());
-        response.setLoanAmount(loan.getLoanAmount());
+
+        response.setRequestedAmount(loan.getRequestedAmount());
         response.setTenor(loan.getTenor());
         response.setPurpose(loan.getPurpose());
-        response.setMonthlyIncome(loan.getMonthlyIncome());
-        response.setMonthlyExpense(loan.getMonthlyExpense());
-        response.setEmploymentStatus(loan.getEmploymentStatus());
-        response.setStatus(loan.getStatus());
+
+        // Credit Scoring
         response.setCreditScore(loan.getCreditScore());
-        response.setCreditRecommendation(loan.getCreditRecommendation());
+        response.setRiskLevel(loan.getRiskLevel());
+        response.setEligible(loan.getEligible());
+
+        // AI Recommendation
+        response.setAiRecommendation(loan.getAiRecommendation());
+        response.setAiExplanation(loan.getAiExplanation());
+        response.setAiStatus(loan.getAiStatus());
+        response.setAiGeneratedAt(loan.getAiGeneratedAt());
+
+        // Loan Status
+        response.setLoanStatus(loan.getLoanStatus());
+
         response.setCreatedAt(loan.getCreatedAt());
         response.setUpdatedAt(loan.getUpdatedAt());
 
