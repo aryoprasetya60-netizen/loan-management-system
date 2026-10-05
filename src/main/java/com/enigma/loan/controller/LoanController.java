@@ -35,20 +35,20 @@ public class LoanController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('CUSTOMER')")
     public ResponseEntity<CommonResponse<LoanResponse>> getById(
             @PathVariable Long id
     ) {
-        LoanResponse response = loanService.getById(id);
+        LoanResponse response = loanService.getMyLoanById(id);
 
-        CommonResponse<LoanResponse> commonResponse = CommonResponse.<LoanResponse>builder()
-                .statusCode(HttpStatus.OK.value())
-                .message(ResponseMessage.SUCCES_GET_DATA)
-                .data(response)
-                .build();
+        CommonResponse<LoanResponse> commonResponse =
+                CommonResponse.<LoanResponse>builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .message(ResponseMessage.SUCCES_GET_DATA)
+                        .data(response)
+                        .build();
 
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(commonResponse);
+        return ResponseEntity.ok(commonResponse);
     }
 
     @GetMapping("/me")

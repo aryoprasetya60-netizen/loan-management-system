@@ -17,6 +17,7 @@ import com.enigma.loan.utils.exception.BadRequestException;
 import com.enigma.loan.utils.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,15 @@ public class LoanServiceImpl implements LoanService {
     private final UserRepository userRepository;
     private final UserProfileRepository userProfileRepository;
     private final RestClient restClient;
+
+    @Override
+    public List<LoanResponse> getAll() {
+        List<Loan> loans = loanRepository.findAll();
+
+        return loans.stream()
+                .map(LoanMapper::convertToLoanResponse)
+                .toList();
+    }
 
     @Override
     @Transactional
@@ -128,6 +138,24 @@ public class LoanServiceImpl implements LoanService {
         return loans.stream()
                 .map(LoanMapper::convertToLoanResponse)
                 .toList();
+    }
+
+    @Override
+    public LoanResponse getMyLoanById(Long id) {
+
+        String email = SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
+
+        User user = findByEmail(email);
+
+        Loan loan = findById(id);
+
+        if (!loan.getUser().getId().equals(user.getId())) {
+            throw new AccessDeniedException("Anda tidak memiliki akses ke loan ini");
+        }
+
+        return LoanMapper.convertToLoanResponse(loan);
     }
 
     private Loan findById(Long id){
