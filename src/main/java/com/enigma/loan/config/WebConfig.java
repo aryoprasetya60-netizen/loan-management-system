@@ -1,5 +1,5 @@
-package com.enigma.loan.config;
 
+package com.enigma.loan.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -22,29 +22,29 @@ public class WebConfig implements WebMvcConfigurer {
     public CorsFilter corsFilter() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
 
-        // izinkan origins tertentu
         corsConfiguration.setAllowedOrigins(Arrays.asList(allowedOrigins));
 
-        // izinkan http method yang digunakan
-        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+        corsConfiguration.setAllowedMethods(Arrays.asList(
+                "GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"
+        ));
 
-        // izinkan header tertentu
-        corsConfiguration.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization"));
+        corsConfiguration.setAllowedHeaders(
+                Collections.singletonList("*")
+        );
 
-        // izinkan kirim cookies dari domain berbeda
         corsConfiguration.setAllowCredentials(true);
 
-        // izikan berapa lama browser menyimpan cache cors response
         corsConfiguration.setMaxAge(3600L);
 
-        // izinkan expose authorization header ke client side
-        corsConfiguration.setExposedHeaders(Collections.singletonList("Authorization"));
+        corsConfiguration.setExposedHeaders(
+                Collections.singletonList("Authorization")
+        );
 
-        // apply atau terapkan semua configurasi
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        UrlBasedCorsConfigurationSource source =
+                new UrlBasedCorsConfigurationSource();
+
         source.registerCorsConfiguration("/**", corsConfiguration);
 
         return new CorsFilter(source);
     }
-
 }

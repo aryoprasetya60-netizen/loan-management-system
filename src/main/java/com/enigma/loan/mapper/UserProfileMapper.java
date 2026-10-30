@@ -25,7 +25,7 @@ public class UserProfileMapper {
 
         response.setId(userProfile.getUser().getId());
         response.setName(userProfile.getUser().getName());
-        response.setEmail(userProfile.getUser().getEmail());
+        response.setEmail(userProfile.getUser().getUsername());
         response.setPhoneNumber(userProfile.getUser().getPhoneNumber());
 
         response.setMonthlyIncome(userProfile.getMonthlyIncome());

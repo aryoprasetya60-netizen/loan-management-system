@@ -52,9 +52,9 @@ public class LoanServiceImpl implements LoanService {
         Authentication authentication =
                 SecurityContextHolder.getContext().getAuthentication();
 
-        String email = authentication.getName();
+        String username = authentication.getName();
 
-        User user = findByEmail(email);
+        User user = findByUsername(username);
 
         UserProfile userProfile = userProfileRepository.findByUser(user)
                 .orElseThrow(() ->
@@ -123,13 +123,13 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     public List<LoanResponse> getMyLoans() {
-        // 1. Ambil email user yang sedang login dari JWT Security Context
-        String email = SecurityContextHolder.getContext()
+        // 1. Ambil username user yang sedang login dari JWT Security Context
+        String username = SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getName();
 
-        // 2. Cari user berdasarkan email
-        User user = findByEmail(email);
+        // 2. Cari user berdasarkan username
+        User user = findByUsername(username);
 
         // 3. Ambil semua loan milik user tersebut
         List<Loan> loans = loanRepository.findByUser(user);
@@ -143,11 +143,11 @@ public class LoanServiceImpl implements LoanService {
     @Override
     public LoanResponse getMyLoanById(Long id) {
 
-        String email = SecurityContextHolder.getContext()
+        String username = SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getName();
 
-        User user = findByEmail(email);
+        User user = findByUsername(username);
 
         Loan loan = findById(id);
 
@@ -164,8 +164,8 @@ public class LoanServiceImpl implements LoanService {
                         new ResourceNotFoundException("Loan not found"));
     }
 
-    private User findByEmail(String email){
-        return userRepository.findByEmail(email)
+    private User findByUsername(String username){
+        return userRepository.findByUsername(username)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("User not found"));
     }

@@ -16,9 +16,8 @@ public class UserRequest {
     @NotBlank(message = "nama tidak boleh kosong")
     private String name;
 
-    @NotBlank(message = "email tidak boleh kosong")
-    @Email
-    private String email;
+    @NotBlank(message = "username tidak boleh kosong")
+    private String username;
 
     @NotBlank(message = "Password Tidak Boleh Kosong")
     private String password;

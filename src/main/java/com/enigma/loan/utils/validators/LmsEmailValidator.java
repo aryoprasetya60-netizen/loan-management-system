@@ -14,7 +14,7 @@ public class LmsEmailValidator implements ConstraintValidator<ValidLmsEmail, Use
             return true;
         }
 
-        if(request.getEmail() == null || request.getRole() == null) {
+        if(request.getUsername() == null || request.getRole() == null) {
             return true;
         }
 

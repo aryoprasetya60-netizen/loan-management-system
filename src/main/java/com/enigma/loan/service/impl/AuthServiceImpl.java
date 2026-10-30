@@ -38,7 +38,7 @@ public class AuthServiceImpl implements AuthService {
         // authenticare menggunakan authenticationManager
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
+                        request.getUsername(),
                         request.getPassword()
                 )
         );
@@ -56,7 +56,7 @@ public class AuthServiceImpl implements AuthService {
         return LoginResponse.builder()
                 .token(jwt)
                 .role(role)
-                .email(request.getEmail())
+                .username(request.getUsername())
                 .build();
     }
 
@@ -69,7 +69,7 @@ public class AuthServiceImpl implements AuthService {
 
         User newUser = User.builder()
                 .name(request.getName())
-                .email(request.getEmail())
+                .username(request.getUsername())
                 .role(userRole)
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();

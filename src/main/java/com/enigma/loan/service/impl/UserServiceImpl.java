@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse create(UserRequest request) {
 
-        validateEmailNotExists(request.getEmail());
+        validateUsernameNotExists(request.getUsername());
 
         request.setPassword(passwordEncoder.encode(request.getPassword()));
 
@@ -57,12 +57,12 @@ public class UserServiceImpl implements UserService {
 
         User user = findById(id);
 
-        if (!user.getEmail().equals(request.getEmail())) {
-            validateEmailNotExists(request.getEmail());
+        if (!user.getUsername().equals(request.getUsername())) {
+            validateUsernameNotExists(request.getUsername());
         }
 
         user.setName(request.getName());
-        user.setEmail(request.getEmail());
+        user.setUsername(request.getUsername());
         user.setPhoneNumber(request.getPhoneNumber());
         user.setRole(UserRole.valueOf(request.getRole()));
 
@@ -83,11 +83,11 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User","Id",id));
     }
-    private void validateEmailNotExists(String email) {
+    private void validateUsernameNotExists(String username) {
 
-        if (userRepository.existsByEmail(email)) {
+        if (userRepository.existsByUsername(username)) {
             throw new DuplicateResourceException(
-                    "Email Sudah Digunakan: " + email
+                    "Username Sudah Digunakan: " + username
             );
         }
     }

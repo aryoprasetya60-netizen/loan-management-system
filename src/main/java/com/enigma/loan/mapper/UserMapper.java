@@ -22,7 +22,7 @@ public class UserMapper {
         // 2. set value
         userResponse.setId(user.getId());
         userResponse.setName(user.getName());
-        userResponse.setEmail(user.getEmail());
+        userResponse.setUsername(user.getUsername());
         userResponse.setPhoneNumber(user.getPhoneNumber());
         userResponse.setRole(user.getRole());
         return userResponse;
@@ -31,7 +31,7 @@ public class UserMapper {
     public static User toEntity(UserRequest request) {
         return User.builder()
                 .name(request.getName())
-                .email(request.getEmail())
+                .username(request.getUsername())
                 .password(request.getPassword())
                 .phoneNumber(request.getPhoneNumber())
                 .role(UserRole.valueOf(request.getRole()))

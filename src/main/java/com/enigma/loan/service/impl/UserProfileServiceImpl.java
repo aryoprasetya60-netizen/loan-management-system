@@ -87,11 +87,11 @@ public class UserProfileServiceImpl implements UserProfileService {
         Authentication authentication =
                 SecurityContextHolder.getContext().getAuthentication();
 
-        String email = authentication.getName();
+        String username = authentication.getName();
 
-        User user = userRepository.findByEmail(email)
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("User", "email", email));
+                        new ResourceNotFoundException("User", "username", username));
 
         UserProfile userProfile =
                 userProfileRepository.findByUser(user)
@@ -120,11 +120,11 @@ public class UserProfileServiceImpl implements UserProfileService {
         Authentication authentication =
                 SecurityContextHolder.getContext().getAuthentication();
 
-        String email = authentication.getName();
+        String username = authentication.getName();
 
-        User user = userRepository.findByEmail(email)
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("User", "email", email));
+                        new ResourceNotFoundException("User", "username", username));
 
         UserProfile userProfile =
                 userProfileRepository.findByUser(user)
@@ -153,11 +153,11 @@ public class UserProfileServiceImpl implements UserProfileService {
                 SecurityContextHolder.getContext()
                         .getAuthentication();
 
-        String email = authentication.getName();
+        String username = authentication.getName();
 
-        User user = userRepository.findByEmail(email)
+        User user = userRepository.findByUsername(username)
                         .orElseThrow(() ->
-                                new ResourceNotFoundException("User", "email", email));
+                                new ResourceNotFoundException("User", "username", username));
 
         UserProfile userProfile = userProfileRepository.findByUser(user)
                         .orElseThrow(() ->
@@ -183,12 +183,12 @@ public class UserProfileServiceImpl implements UserProfileService {
                 SecurityContextHolder.getContext()
                         .getAuthentication();
 
-        String email = authentication.getName();
+        String username = authentication.getName();
 
         User user =
-                userRepository.findByEmail(email)
+                userRepository.findByUsername(username)
                         .orElseThrow(() ->
-                                new ResourceNotFoundException("User", "email", email));
+                                new ResourceNotFoundException("User", "username", username));
 
         UserProfile userProfile =
                 userProfileRepository.findByUser(user)
@@ -218,12 +218,12 @@ public class UserProfileServiceImpl implements UserProfileService {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        String email = authentication.getName();
+        String username = authentication.getName();
 
         User user =
-                userRepository.findByEmail(email)
+                userRepository.findByUsername(username)
                         .orElseThrow(() ->
-                                new ResourceNotFoundException("User", "email", email));
+                                new ResourceNotFoundException("User", "username", username));
 
         UserProfile userProfile =
                 userProfileRepository.findByUser(user)
@@ -251,12 +251,12 @@ public class UserProfileServiceImpl implements UserProfileService {
                 SecurityContextHolder.getContext()
                         .getAuthentication();
 
-        String email = authentication.getName();
+        String username = authentication.getName();
 
         User user =
-                userRepository.findByEmail(email)
+                userRepository.findByUsername(username)
                         .orElseThrow(() ->
-                                new ResourceNotFoundException("User", "email", email));
+                                new ResourceNotFoundException("User", "username", username));
 
         UserProfile userProfile =
                 userProfileRepository.findByUser(user)
@@ -286,9 +286,9 @@ public class UserProfileServiceImpl implements UserProfileService {
         Authentication authentication =
                 SecurityContextHolder.getContext().getAuthentication();
 
-        String email = authentication.getName();
+        String username = authentication.getName();
 
-        return userRepository.findByEmail(email)
+        return userRepository.findByUsername(username)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("User not found"));
     }

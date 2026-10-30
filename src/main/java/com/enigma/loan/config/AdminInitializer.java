@@ -19,9 +19,9 @@ public class AdminInitializer {
     @Transactional
     public void initAdminUser() {
         // validasi apakah admin sudah exist
-        if(!userRepository.existsByEmail("admin@mail.com")) {
+        if(!userRepository.existsByUsername("admin")) {
             User admin = User.builder()
-                    .email("admin@mail.com")
+                    .username("admin")
                     .name("admin")
                     .password(passwordEncoder.encode("admin123"))
                     .role(UserRole.valueOf("ADMIN"))
